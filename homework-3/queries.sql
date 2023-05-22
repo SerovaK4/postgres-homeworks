@@ -29,12 +29,11 @@ ORDER BY units_in_stock
 -- 3. Список компаний заказчиков (company_name из табл customers), не сделавших ни одного заказа
 
 
-SELECT product_name, units_in_stock, suppliers.contact_name, suppliers.phone
-FROM products
-LEFT JOIN suppliers USING(supplier_id)
-LEFT JOIN categories USING(category_id)
-WHERE discontinued=0 AND units_in_stock<25 AND (categories.category_name='Dairy Products' OR category_name='Condiments')
-ORDER BY units_in_stock
+SELECT customers.company_name
+FROM customers
+LEFT JOIN orders USING (customer_id)
+GROUP BY customers.company_name
+HAVING COUNT(order_id)=0
 
 -- 4. уникальные названия продуктов, которых заказано ровно 10 единиц (количество заказанных единиц см в колонке quantity табл order_details)
 -- Этот запрос написать именно с использованием подзапроса.
